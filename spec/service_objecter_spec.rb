@@ -1,6 +1,45 @@
 require 'spec_helper'
 
 RSpec.describe ServiceObjecter do
+  let(:klass) { Class.new }
+
+  before do
+    klass.include subject
+  end
+
+  describe '#call' do
+    it 'runs call instalnce' do
+      expect(klass).to receive(:call)
+      klass.call
+    end
+  end
+
+  describe '#success' do
+    it 'returns success result object' do
+      expect(klass.new.send(:success)).to be_instance_of(klass::Result)
+        .and have_attributes(success: true)
+    end
+
+    let(:value) { :some_value }
+
+    it 'returns result with value' do
+      expect(klass.new.send(:success, value)).to have_attributes(value: value)
+    end
+  end
+
+  describe '#failed' do
+    it 'returns failed result object' do
+      expect(klass.new.send(:failed)).to be_instance_of(klass::Result)
+        .and have_attributes(success: false)
+    end
+
+    let(:value) { :some_value }
+
+    it 'returns result with value' do
+      expect(klass.new.send(:success, value)).to have_attributes(value: value)
+    end
+  end
+
   it 'has a version number' do
     expect(ServiceObjecter::VERSION).to eq '1.0.0'
   end
