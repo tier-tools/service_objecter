@@ -86,6 +86,24 @@ if service.success?
 end
 ```
 
+## ChainIt integration
+
+Install `ChainIt` to get more power of service objects.
+Read more [ChainIt gem](https://github.com/tier-tools)
+With `ServiceObjecter` you get shortcuts.
+
+```ruby
+class Service
+  include ServiceObjecter
+
+  def call(params)
+    chain { some method }
+    chain { other method }
+    result
+  end
+end
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/tier-tools/service_objecter.
