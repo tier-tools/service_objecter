@@ -1,7 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe ServiceObjecter do
-  let(:klass) { Class.new }
+  let(:klass) do
+    Class.new do
+      def call
+        self
+      end
+    end
+  end
 
   before do
     klass.include subject
@@ -80,6 +86,35 @@ RSpec.describe ServiceObjecter do
 
       it 'return result' do
         expect(action).to eq(result)
+      end
+    end
+  end
+
+  context 'with ChainIt' do
+    before do
+      ChainIt = Class.new do
+        def chain; end
+        def result
+          ServiceObjecter::Result.new(true)
+        end
+      end
+
+      klass.prepend(described_class::ChainitIntegration)
+    end
+
+    it 'has chain instance' do
+      expect(klass.call.send(:__get_chain__)).to be_instance_of(ChainIt)
+    end
+
+    it 'responds to chain' do
+      expect(klass.new).to respond_to(:chain)
+    end
+
+    describe '#success' do
+      let(:instance) { klass.call }
+      it 'returns success result object' do
+        expect(klass.call.send(:success)).to be_instance_of(klass::Result)
+          .and have_attributes(success?: true)
       end
     end
   end

@@ -1,8 +1,10 @@
 require 'service_objecter/result'
+require 'service_objecter/chainit_integration'
 
 module ServiceObjecter
   def self.included(klass)
     klass.extend(ClassMethods)
+    klass.prepend(ChainitIntegration) if defined?(ChainIt)
   end
 
   module ClassMethods
