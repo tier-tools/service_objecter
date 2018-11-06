@@ -89,7 +89,7 @@ end
 ## ChainIt integration
 
 Install `ChainIt` to get more power of service objects.
-Read more [ChainIt gem](https://github.com/tier-tools)
+Read more [ChainIt gem](https://github.com/tier-tools/ChainIt)
 With `ServiceObjecter` you get shortcuts.
 
 ```ruby
