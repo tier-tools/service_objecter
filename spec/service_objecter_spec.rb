@@ -47,7 +47,7 @@ RSpec.describe ServiceObjecter do
   end
 
   it 'has a version number' do
-    expect(ServiceObjecter::VERSION).to eq '1.0.1'
+    expect(ServiceObjecter::VERSION).to eq '1.0.2'
   end
 
   context '#with_transaction' do
