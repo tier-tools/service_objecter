@@ -4,7 +4,7 @@ require 'service_objecter/chainit_integration'
 module ServiceObjecter
   def self.included(klass)
     klass.extend(ClassMethods)
-    klass.include(ChainitIntegration) if defined?(ChainIt)
+    klass.include(ServiceObjecter::ChainitIntegration) if defined?(ChainIt)
   end
 
   module ClassMethods
@@ -40,6 +40,10 @@ module ServiceObjecter
   def result
     @result ||= Result.new(true)
   end
+
+  # def result=(*args)
+  #   result.push(*args)
+  # end
 
   # Transactions helper
   # Simple usage
