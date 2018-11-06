@@ -99,7 +99,7 @@ RSpec.describe ServiceObjecter do
         end
       end
 
-      klass.prepend(described_class::ChainitIntegration)
+      klass.include(described_class::ChainitIntegration)
     end
 
     it 'has chain instance' do

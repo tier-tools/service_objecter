@@ -3,16 +3,8 @@ module ServiceObjecter
   module ChainitIntegration
     extend(Forwardable)
 
-    def self.prepended(klass)
-      klass.extend(ClassMethods)
-    end
-
-    module ClassMethods
-      def call(*args)
-        service = new
-        service.send :__set_chain__
-        service.call(*args)
-      end
+    def initialize
+      __set_chain__
     end
 
     def_delegators :@__chain__, :chain, :skip_next, :on_error, :result
