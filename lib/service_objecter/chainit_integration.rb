@@ -14,6 +14,8 @@ module ServiceObjecter
 
     def __set_chain__
       @__chain__ = ChainIt.new
+      @__chain__.chain { ServiceObjecter::Result.new(true) }
+      @__chain__
     end
 
     def __get_chain__
