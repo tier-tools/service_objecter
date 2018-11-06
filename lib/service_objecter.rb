@@ -1,3 +1,5 @@
+require 'service_objecter/result'
+
 module ServiceObjecter
   def self.included(klass)
     klass.extend(ClassMethods)
@@ -9,16 +11,6 @@ module ServiceObjecter
     end
   end
 
-  Result = Struct.new(:success, :value) do
-    def success?
-      success
-    end
-
-    def failure?
-      !success
-    end
-  end
-
   def call
     raise NotImplementedError
   end
@@ -26,11 +18,11 @@ module ServiceObjecter
   private
 
   def success(value = nil)
-    Result.new(true, value)
+    result.push(true, value)
   end
 
   def failed(value = nil)
-    Result.new(false, value)
+    result.push(false, value)
   end
 
   def crashed(error, value = nil)
@@ -41,6 +33,10 @@ module ServiceObjecter
   def log(data)
     return unless defined?(Rails)
     Rails.logger.error data
+  end
+
+  def result
+    @result ||= Result.new(true)
   end
 
   # Transactions helper
@@ -60,11 +56,12 @@ module ServiceObjecter
 
   def with_transaction
     return yield unless defined?(ActiveRecord)
+    result = nil
     ActiveRecord::Base.transaction(requires_new: true) do
       result = yield
       raise ActiveRecord::Rollback if result.failure?
-      result
     end
+    result
   end
 end
 
